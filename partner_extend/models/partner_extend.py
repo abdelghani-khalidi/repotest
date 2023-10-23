@@ -1,10 +1,6 @@
-# -*- encoding: utf-8 -*-
-
-from odoo import models,fields, api,tools
-from odoo.exceptions import ValidationError
+from odoo import models, fields, api
 import xlrd
-import base64
-from io import BytesIO
+
 class ExcelImportWizard(models.TransientModel):
     _name = 'excel.import.wizard'
     _description = 'Wizard pour Importer depuis Excel'
@@ -12,11 +8,11 @@ class ExcelImportWizard(models.TransientModel):
     file = fields.Binary(string='Fichier Excel', required=True)
 
     def import_excel_data(self):
-        import xlrd
         import base64
-        from io import BytesIO
+        import io
 
-        excel_file = xlrd.open_workbook(file_contents=BytesIO(base64.b64decode(self.file)))
+        file_content = base64.b64decode(self.file)
+        excel_file = xlrd.open_workbook(file_contents=file_content)
         sheet = excel_file.sheet_by_index(0)
 
         receptions = {}
