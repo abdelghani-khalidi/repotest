@@ -41,7 +41,7 @@ class ExcelImportWizard(models.TransientModel):
                     'name': fournisseur_name,
                     
                 })
-
+            
             if numero_commande not in receptions:
                 reception = self.env['stock.picking'].create({
                     'picking_type_id': 1,
@@ -60,7 +60,7 @@ class ExcelImportWizard(models.TransientModel):
                         'name': lot_ids,
                         'product_id': product.id
                     })
-
+            list_product = []
             for pp in reception.move_ids_without_package:
                 list_product.append(pp.product_id.id)
             if lot and product.id not in list_product:
