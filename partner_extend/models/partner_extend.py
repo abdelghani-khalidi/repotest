@@ -16,6 +16,7 @@ class ExcelImportWizard(models.TransientModel):
         sheet = excel_file.sheet_by_index(0)
 
         receptions = {}
+        product = False
         for i in range(1, sheet.nrows):  # Ignorer la première ligne (en-têtes)
             type_reception = sheet.cell_value(i, 0)
             fournisseur_name = sheet.cell_value(i, 1)
@@ -59,9 +60,11 @@ class ExcelImportWizard(models.TransientModel):
                         'name': lot_ids,
                         'product_id': product.id
                     })
-                    
-            if lot :
-             self.env['stock.move'].create({
+
+            for pp in reception.move_ids_without_package:
+                list_product.append(pp.product_id.id)
+            if lot and product.id not in list_product:
+             move = self.env['stock.move'].create({
                 'name': nom_article,
                 'product_id': product.id,
                 'product_uom_qty': quantite,
@@ -70,8 +73,8 @@ class ExcelImportWizard(models.TransientModel):
                 'location_dest_id':8 , 
                 'lot_ids': [(4,lot.id)],
             })
-            else :
-             self.env['stock.move'].create({
+            elif not lot and product.id not in list_product:
+             move = self.env['stock.move'].create({
                 'name': nom_article,
                 'product_id': product.id,
                 'product_uom_qty': quantite,
@@ -79,5 +82,27 @@ class ExcelImportWizard(models.TransientModel):
                 'location_id': 5,
                 'location_dest_id':8 , 
             })
-
+            if move:
+             moveline = self.env['stock.move.line'].create({
+                'name': nom_article,
+                 'move_id': move.id,
+                'product_id': product.id,
+                'product_uom_qty': 1,
+                'location_id': 5,
+                'location_dest_id':8 , 
+                'lot_ids': [(4,lot.id)], 
+            })
+            else: 
+                themove = False
+                for mv in reception.move_ids_without_package:
+                    if mv.product_id.id == product.id:
+                        themove = mv.id
+                moveline = self.env['stock.move.line'].create({
+                'name': nom_article,
+                'move_id': themove,
+                'product_id': product.id,
+                'product_uom_qty': 1,
+                'location_id': 5,
+                'location_dest_id':8 , 
+                'lot_id': lot.id, 
         return {'type': 'ir.actions.act_window_close'}
