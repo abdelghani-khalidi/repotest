@@ -25,6 +25,7 @@ class ExcelImportWizard(models.TransientModel):
             nom_article = sheet.cell_value(i, 5)
             quantite = sheet.cell_value(i, 6)
             lot_ids = sheet.cell_value(i, 7)
+            lot = False
 
             product = self.env['product.product'].search([('default_code', '=', reference_article)], limit=1)
             if not product:
@@ -50,7 +51,7 @@ class ExcelImportWizard(models.TransientModel):
                 receptions[numero_commande] = reception
             else:
                 reception = receptions[numero_commande]
-
+            lot = False
             if lot_ids:
                 lot = self.env['stock.lot'].search([('name', '=', lot_ids)], limit=1)
                 if not lot:
