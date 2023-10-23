@@ -52,15 +52,16 @@ class ExcelImportWizard(models.TransientModel):
             else:
                 reception = receptions[numero_commande]
             lot = False
-            if lot_ids:
+            if lot_ids and lot_ids != "":
                 lot = self.env['stock.lot'].search([('name', '=', lot_ids)], limit=1)
                 if not lot:
                     lot = self.env['stock.lot'].create({
                         'name': lot_ids,
                         'product_id': product.id
                     })
-
-            self.env['stock.move'].create({
+                    
+            if lot :
+             self.env['stock.move'].create({
                 'name': nom_article,
                 'product_id': product.id,
                 'product_uom_qty': quantite,
@@ -68,6 +69,15 @@ class ExcelImportWizard(models.TransientModel):
                 'location_id': 5,
                 'location_dest_id':8 , 
                 'lot_ids': [(4,lot.id)],
+            })
+            else :
+             self.env['stock.move'].create({
+                'name': nom_article,
+                'product_id': product.id,
+                'product_uom_qty': quantite,
+                'picking_id': reception.id,
+                'location_id': 5,
+                'location_dest_id':8 , 
             })
 
         return {'type': 'ir.actions.act_window_close'}
