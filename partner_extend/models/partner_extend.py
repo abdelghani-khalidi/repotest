@@ -35,7 +35,7 @@ class ExcelImportWizard(models.TransientModel):
 
             if numero_commande not in receptions:
                 reception = self.env['stock.picking'].create({
-                    'picking_type_id': type_reception,
+                    'picking_type_id': 1,
                     'partner_id': fournisseur,
                     'scheduled_date': date,
                     'origin': numero_commande
