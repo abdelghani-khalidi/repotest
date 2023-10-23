@@ -22,4 +22,8 @@
         <field name="view_id" ref="view_excel_import_wizard_form"/>
         <field name="target">new</field>
     </record>
+
+    
+
+        <menuitem id="menu_excel_import" name="Importation Excel" parent="base.menu_warehouse_management" action="action_excel_import_wizard"/>
 </odoo>
