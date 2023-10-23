@@ -25,5 +25,5 @@
 
     
 
-        <menuitem id="menu_excel_import" name="Importation Excel" parent="base.menu_warehouse_management" action="action_excel_import_wizard"/>
+        <menuitem id="menu_excel_import" name="Importation Excel" parent="stock.menu_stock_root" action="action_excel_import_wizard"/>
 </odoo>
