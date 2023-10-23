@@ -83,27 +83,49 @@ class ExcelImportWizard(models.TransientModel):
                 'location_dest_id':8 , 
             })
             if move:
-             moveline = self.env['stock.move.line'].create({
+             if lot :
+                moveline = self.env['stock.move.line'].create({
                 'name': nom_article,
-                 'move_id': move.id,
+                'move_id': move.id,
                 'product_id': product.id,
                 'product_uom_qty': 1,
                 'location_id': 5,
                 'location_dest_id':8 , 
-                'lot_ids': [(4,lot.id)], 
-            })
+                'lot_ids': lot.id, 
+                     })
+             else :
+                moveline = self.env['stock.move.line'].create({
+                'name': nom_article,
+                'move_id': move.id,
+                'product_id': product.id,
+                'product_uom_qty': 1,
+                'location_id': 5,
+                'location_dest_id':8 , 
+ 
+                     })
             else: 
                 themove = False
                 for mv in reception.move_ids_without_package:
                     if mv.product_id.id == product.id:
                         themove = mv.id
-                moveline = self.env['stock.move.line'].create({
-                'name': nom_article,
-                'move_id': themove,
-                'product_id': product.id,
-                'product_uom_qty': 1,
-                'location_id': 5,
-                'location_dest_id':8 , 
-                'lot_id': lot.id, 
-                  })
+                if lot:
+                 moveline = self.env['stock.move.line'].create({
+                 'name': nom_article,
+                 'move_id': themove,
+                 'product_id': product.id,
+                 'product_uom_qty': 1,
+                 'location_id': 5,
+                 'location_dest_id':8 , 
+                 'lot_id': lot.id, 
+                   })
+                else:
+                 moveline = self.env['stock.move.line'].create({
+                 'name': nom_article,
+                 'move_id': themove,
+                 'product_id': product.id,
+                 'product_uom_qty': 1,
+                 'location_id': 5,
+                 'location_dest_id':8 , 
+                 
+                   })
         return {'type': 'ir.actions.act_window_close'}
