@@ -37,7 +37,7 @@ class ExcelImportWizard(models.TransientModel):
             if not fournisseur:
                 fournisseur = self.env['res.partner'].create({
                     'name': fournisseur_name,
-                    'supplier': True
+                    
                 })
 
             if numero_commande not in receptions:
