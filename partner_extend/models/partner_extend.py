@@ -44,7 +44,7 @@ class ExcelImportWizard(models.TransientModel):
                 reception = self.env['stock.picking'].create({
                     'picking_type_id': 1,
                     'partner_id': fournisseur.id,
-                    'scheduled_date': date,
+                    # 'scheduled_date': date,
                     'origin': numero_commande
                 })
                 receptions[numero_commande] = reception
