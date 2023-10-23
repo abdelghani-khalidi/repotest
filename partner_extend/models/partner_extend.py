@@ -64,7 +64,8 @@ class ExcelImportWizard(models.TransientModel):
                 'product_id': product.id,
                 'product_uom_qty': quantite,
                 'picking_id': reception.id,
-                'location_id': 1,
+                'location_id': 5,
+                'location_dest_id':8 , 
                 'lot_ids': lot_ids,
             })
 
