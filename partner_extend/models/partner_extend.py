@@ -33,7 +33,7 @@ class ExcelImportWizard(models.TransientModel):
                     'name': nom_article
                 })
 
-            fournisseur = self.env['res.partner'].search([('name', '=', fournisseur_name), ('supplier', '=', True)], limit=1)
+            fournisseur = self.env['res.partner'].search([('name', '=', fournisseur_name)], limit=1)
             if not fournisseur:
                 fournisseur = self.env['res.partner'].create({
                     'name': fournisseur_name,
