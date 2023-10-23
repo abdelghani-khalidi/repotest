@@ -52,9 +52,9 @@ class ExcelImportWizard(models.TransientModel):
                 reception = receptions[numero_commande]
 
             if lot_ids:
-                lot = self.env['stock.production.lot'].search([('name', '=', lot_ids)], limit=1)
+                lot = self.env['stock.lot'].search([('name', '=', lot_ids)], limit=1)
                 if not lot:
-                    lot = self.env['stock.production.lot'].create({
+                    lot = self.env['stock.lot'].create({
                         'name': lot_ids,
                         'product_id': product.id
                     })
