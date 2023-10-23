@@ -2,7 +2,9 @@
 
 from odoo import models,fields, api,tools
 from odoo.exceptions import ValidationError
-
+import xlrd
+import base64
+from io import BytesIO
 class ExcelImportWizard(models.TransientModel):
     _name = 'excel.import.wizard'
     _description = 'Wizard pour Importer depuis Excel'
