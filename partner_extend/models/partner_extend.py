@@ -105,4 +105,5 @@ class ExcelImportWizard(models.TransientModel):
                 'location_id': 5,
                 'location_dest_id':8 , 
                 'lot_id': lot.id, 
+                  })
         return {'type': 'ir.actions.act_window_close'}
