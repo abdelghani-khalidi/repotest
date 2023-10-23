@@ -18,7 +18,7 @@ class ExcelImportWizard(models.TransientModel):
         receptions = {}
         for i in range(1, sheet.nrows):  # Ignorer la première ligne (en-têtes)
             type_reception = sheet.cell_value(i, 0)
-            fournisseur = sheet.cell_value(i, 1)
+            fournisseur_name = sheet.cell_value(i, 1)
             date = sheet.cell_value(i, 2)
             numero_commande = sheet.cell_value(i, 3)
             reference_article = sheet.cell_value(i, 4)
@@ -33,10 +33,17 @@ class ExcelImportWizard(models.TransientModel):
                     'name': nom_article
                 })
 
+            fournisseur = self.env['res.partner'].search([('name', '=', fournisseur_name), ('supplier', '=', True)], limit=1)
+            if not fournisseur:
+                fournisseur = self.env['res.partner'].create({
+                    'name': fournisseur_name,
+                    'supplier': True
+                })
+
             if numero_commande not in receptions:
                 reception = self.env['stock.picking'].create({
                     'picking_type_id': 1,
-                    'partner_id': fournisseur,
+                    'partner_id': fournisseur.id,
                     'scheduled_date': date,
                     'origin': numero_commande
                 })
